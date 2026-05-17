@@ -52,36 +52,36 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const btn = contactForm.querySelector('button');
             const originalText = btn.innerText;
-            
+
             // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
-            
+
             // Construct Gmail Web parameters
             const toEmail = 'aribaibrahim71@gmail.com';
             const subject = encodeURIComponent(`New Project Inquiry from ${name}`);
             const body = encodeURIComponent(
-                `Hi Areeba,\n\nI have submitted a new project inquiry through your portfolio.\n\n` +
-                `Here are my details:\n` +
+                `Hi Areeba Ibrahim,\n\nI have submitted a new project inquiry through your portfolio.\n\n` +
+                `𝗛𝗲𝗿𝗲 𝗮𝗿𝗲 𝗺𝘆 𝗱𝗲𝘁𝗮𝗶𝗹𝘀:\n` +
                 `-----------------------------------------\n` +
-                `Name: ${name}\n` +
-                `Email: ${email}\n` +
+                `𝗡𝗮𝗺𝗲: ${name}\n` +
+                `𝗘𝗺𝗮𝗶𝗹: ${email}\n` +
                 `-----------------------------------------\n\n` +
-                `Project Details:\n${message}\n\n` +
+                `𝗣𝗿𝗼𝗷𝗲𝗰𝘁 𝗗𝗲𝘁𝗮𝗶𝗹𝘀:\n${message}\n\n` +
                 `Best regards,\n${name}`
             );
-            
+
             // Direct Gmail Web Compose link
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${toEmail}&su=${subject}&body=${body}`;
-            
+
             btn.innerText = 'Opening Gmail...';
             btn.style.background = 'linear-gradient(45deg, #10b981, #059669)';
             btn.style.pointerEvents = 'none';
-            
+
             // Open Gmail Web Compose in a new tab
             window.open(gmailUrl, '_blank');
-            
+
             // Reset form and restore button state
             setTimeout(() => {
                 contactForm.reset();
