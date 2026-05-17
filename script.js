@@ -211,6 +211,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Touch Swipe Support for mobile devices
+        let startX = 0;
+        let endX = 0;
+        
+        slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        slider.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            const threshold = 50; // minimum distance to count as swipe
+            
+            const visibleCards = getVisibleCardsCount();
+            const maxIndex = totalCards - visibleCards;
+            
+            if (Math.abs(diffX) > threshold) {
+                if (diffX > 0) {
+                    // Swiped left -> Next card
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                        updateSlider();
+                    }
+                } else {
+                    // Swiped right -> Previous card
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateSlider();
+                    }
+                }
+            }
+        }, { passive: true });
+
         // Initialize slider
         createDots();
         updateSlider();

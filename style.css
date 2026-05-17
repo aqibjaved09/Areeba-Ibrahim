@@ -854,11 +854,16 @@ footer p {
 @media (max-width: 768px) {
     .testimonial-card {
         flex: 0 0 100%;
+        padding: 2rem 1.5rem;
         /* 1 card on mobile */
     }
 
     .testimonials-slider-container {
-        gap: 0.5rem;
+        gap: 0;
+    }
+
+    .testimonials-slider-container .slider-btn {
+        display: none;
     }
 }
 
