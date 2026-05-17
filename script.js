@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Menu Toggle (Simplified interaction)
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    
-    if(menuToggle && navLinks) {
+
+    if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', () => {
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
             navLinks.style.flexDirection = 'column';
@@ -45,26 +45,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Form submission
+    // Form submission via Gmail Web Compose
     const contactForm = document.getElementById('contactForm');
-    if(contactForm) {
+    if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const btn = contactForm.querySelector('button');
             const originalText = btn.innerText;
-            btn.innerText = 'Sending...';
             
-            // Simulate sending
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Construct Gmail Web parameters
+            const toEmail = 'aribaibrahim71@gmail.com';
+            const subject = encodeURIComponent(`New Project Inquiry from ${name}`);
+            const body = encodeURIComponent(
+                `Hi Areeba,\n\nI have submitted a new project inquiry through your portfolio.\n\n` +
+                `Here are my details:\n` +
+                `-----------------------------------------\n` +
+                `Name: ${name}\n` +
+                `Email: ${email}\n` +
+                `-----------------------------------------\n\n` +
+                `Project Details:\n${message}\n\n` +
+                `Best regards,\n${name}`
+            );
+            
+            // Direct Gmail Web Compose link
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${toEmail}&su=${subject}&body=${body}`;
+            
+            btn.innerText = 'Opening Gmail...';
+            btn.style.background = 'linear-gradient(45deg, #10b981, #059669)';
+            btn.style.pointerEvents = 'none';
+            
+            // Open Gmail Web Compose in a new tab
+            window.open(gmailUrl, '_blank');
+            
+            // Reset form and restore button state
             setTimeout(() => {
-                btn.innerText = 'Message Sent!';
-                btn.style.background = 'linear-gradient(45deg, #10b981, #059669)';
                 contactForm.reset();
-                
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = '';
-                }, 3000);
-            }, 1500);
+                btn.innerText = originalText;
+                btn.style.background = '';
+                btn.style.pointerEvents = 'auto';
+            }, 2000);
         });
     }
 
@@ -73,12 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            if(target) {
+            if (target) {
                 // close mobile menu if open
-                if(window.innerWidth <= 768 && navLinks) {
+                if (window.innerWidth <= 768 && navLinks) {
                     navLinks.style.display = 'none';
                 }
-                
+
                 target.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -96,11 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = +el.getAttribute('data-target');
             const duration = 2000; // 2 seconds
             const increment = target / (duration / 16); // 60fps
-            
+
             let current = 0;
             const updateCount = () => {
                 current += increment;
-                if(current < target) {
+                if (current < target) {
                     el.innerText = Math.ceil(current);
                     requestAnimationFrame(updateCount);
                 } else {
@@ -114,14 +138,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const statsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if(entry.isIntersecting && !hasCounted) {
+            if (entry.isIntersecting && !hasCounted) {
                 runCountUp();
             }
         });
     }, { threshold: 0.5 });
 
     const statsSection = document.querySelector('.stats');
-    if(statsSection) {
+    if (statsSection) {
         statsObserver.observe(statsSection);
     }
 
@@ -130,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const dotsContainer = document.getElementById('sliderDots');
-    
+
     if (slider && prevBtn && nextBtn && dotsContainer) {
         const cards = slider.querySelectorAll('.testimonial-card');
         const totalCards = cards.length;
@@ -145,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateSlider = () => {
             const visibleCards = getVisibleCardsCount();
             const maxIndex = totalCards - visibleCards;
-            
+
             // Boundary checks
             if (currentIndex > maxIndex) {
                 currentIndex = maxIndex;
@@ -173,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disable buttons if at boundary
             prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
             prevBtn.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
-            
+
             nextBtn.style.opacity = currentIndex === maxIndex ? '0.3' : '1';
             nextBtn.style.pointerEvents = currentIndex === maxIndex ? 'none' : 'auto';
         };
@@ -182,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dotsContainer.innerHTML = '';
             const visibleCards = getVisibleCardsCount();
             const dotsCount = totalCards - visibleCards + 1;
-            
+
             for (let i = 0; i < dotsCount; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('dot');
@@ -214,19 +238,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Touch Swipe Support for mobile devices
         let startX = 0;
         let endX = 0;
-        
+
         slider.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
         }, { passive: true });
-        
+
         slider.addEventListener('touchend', (e) => {
             endX = e.changedTouches[0].clientX;
             const diffX = startX - endX;
             const threshold = 50; // minimum distance to count as swipe
-            
+
             const visibleCards = getVisibleCardsCount();
             const maxIndex = totalCards - visibleCards;
-            
+
             if (Math.abs(diffX) > threshold) {
                 if (diffX > 0) {
                     // Swiped left -> Next card
@@ -265,11 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
             this.pauseDuration = options.pauseDuration || 2000;
             this.loop = options.loop !== undefined ? options.loop : true;
             this.showCursor = options.showCursor !== false;
-            
+
             this.txt = '';
             this.wordIndex = 0;
             this.isDeleting = false;
-            
+
             // Add cursor if requested
             if (this.showCursor) {
                 this.cursor = document.createElement('span');
@@ -277,13 +301,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.cursor.innerText = options.cursorCharacter || '|';
                 this.element.parentNode.insertBefore(this.cursor, this.element.nextSibling);
             }
-            
+
             this.type();
         }
 
         type() {
             const currentWord = this.words[this.wordIndex];
-            
+
             if (this.isDeleting) {
                 this.txt = currentWord.substring(0, this.txt.length - 1);
             } else {
@@ -301,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Word completed typing
             if (!this.isDeleting && this.txt === currentWord) {
                 typeSpeed = this.pauseDuration;
-                
+
                 if (this.loop || this.wordIndex < this.words.length - 1) {
                     this.isDeleting = true;
                 } else {
