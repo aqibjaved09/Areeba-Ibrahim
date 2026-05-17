@@ -17,6 +17,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -729,13 +730,35 @@ footer p {
     box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
     z-index: 9999;
     text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, bottom 0.3s ease, right 0.3s ease;
 }
 
 .whatsapp-float:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
     color: white;
+}
+
+/* Responsive WhatsApp Button */
+@media (max-width: 992px) {
+    .whatsapp-float {
+        bottom: 25px;
+        right: 25px;
+        width: 55px;
+        height: 55px;
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
+    }
 }
 
 /* TextType Component Styles */
